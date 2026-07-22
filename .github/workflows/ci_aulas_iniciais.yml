@@ -1,0 +1,42 @@
+name: CI - Aulas 01 a 03 (Linting e PEP8)
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    types: [ opened, synchronize, reopened ]
+    branches: [ "main" ]
+
+jobs:
+  qualidade_codigo:
+    name: Validação de Sintaxe e PEP8
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Baixa o código enviado pelo aluno no PR
+      - name: Checkout do Repositório
+        uses: actions/checkout@v4
+
+      # 2. Configura a versão padrão do Python
+      - name: Configurar Python 3.10
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      # 3. Instala a ferramenta de análise estática (flake8)
+      - name: Instalar Flake8
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8
+
+      # 4. Checa erros críticos de sintaxe e variáveis não declaradas
+      - name: Validar Erros Críticos de Sintaxe
+        run: |
+          # O comando para a execução se encontrar erros graves (select=E9,F63,F7,F82)
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+
+      # 5. Avalia avisos de boas práticas de código
+      - name: Avaliar Boas Práticas (PEP8)
+        run: |
+          # Exibe os avisos de estilo de código e complexidade ciclomática
+          flake8 . --count --max-complexity=10 --max-line-length=127 --statistics
