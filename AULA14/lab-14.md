@@ -24,26 +24,3 @@ Um projeto de RPA sem arquitetura definida vira um "script monolítico gigante" 
 
 ---
 
-## 🔑 Gabarito e Resolução Comentada (Professor)
-
-### 1. Estrutura de Arquivos Esperada no Repositório
-
-```text
-rpa-projeto-final/
-│
-├── .gitignore
-├── requirements.txt
-├── README.md
-├── main.py
-│
-├── config/
-│   └── settings.py
-│
-├── modules/
-│   ├── __init__.py
-│   ├── web_scraper.py
-│   └── pdf_processor.py
-│
-└── data/
-    ├── input/
-    └── output/

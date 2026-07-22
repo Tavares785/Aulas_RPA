@@ -1,4 +1,4 @@
-name: Pipeline - Aulas 10 e 11 (Extração e Artefatos Excel)
+name: CI - Aulas 10 e 11 (Extração de Dados e Artefatos)
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
 
 jobs:
   extracao_e_artefatos:
-    name: Processar PDFs e Guardar Planilha
+    name: Processar PDFs, Scraping e Guardar Artefatos
     runs-on: ubuntu-latest
 
     steps:
@@ -38,5 +38,19 @@ jobs:
         with:
           name: relatorio-faturas-excel
           path: relatorio_faturas.xlsx
+          if-no-files-found: ignore
+          retention-days: 7
+
+      - name: Executar Script de Scraping de Notícias
+        run: |
+          # Executa o script do aluno que gera o arquivo CSV com notícias
+          python AULA11/scraper_noticias.py || true
+
+      # Disponibiliza o arquivo CSV para download na interface do GitHub
+      - name: Upload do CSV de Notícias como Artefato
+        uses: actions/upload-artifact@v4
+        with:
+          name: relatorio-noticias-csv
+          path: noticias.csv
           if-no-files-found: ignore
           retention-days: 7
